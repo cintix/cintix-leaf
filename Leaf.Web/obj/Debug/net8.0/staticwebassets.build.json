@@ -1,0 +1,331 @@
+{
+  "Version": 1,
+  "Hash": "s+qNrnfOdu47LeRboXUvYZPoNJXa/vYXnWDm7fIvSJE=",
+  "Source": "Leaf.Web",
+  "BasePath": "_content/Leaf.Web",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "Leaf.Web/wwwroot",
+      "Source": "Leaf.Web",
+      "ContentRoot": "/Users/michael.martinsen/Projects/cintix-leaf/Leaf.Web/wwwroot/",
+      "BasePath": "_content/Leaf.Web",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/Users/michael.martinsen/Projects/cintix-leaf/Leaf.Web/wwwroot/css/app.css",
+      "SourceId": "Leaf.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/michael.martinsen/Projects/cintix-leaf/Leaf.Web/wwwroot/",
+      "BasePath": "_content/Leaf.Web",
+      "RelativePath": "css/app#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "fmp7sg4ajt",
+      "Integrity": "ieYAztV1VOyGiybejw/Ry/1kDr1g9HSKN5pBTnH96NY=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/css/app.css"
+    },
+    {
+      "Identity": "/Users/michael.martinsen/Projects/cintix-leaf/Leaf.Web/wwwroot/favicon.ico",
+      "SourceId": "Leaf.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/michael.martinsen/Projects/cintix-leaf/Leaf.Web/wwwroot/",
+      "BasePath": "_content/Leaf.Web",
+      "RelativePath": "favicon#[.{fingerprint}]?.ico",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "61n19gt1b8",
+      "Integrity": "Jtxf9L+5ITKRc1gIRl4VbUpGkRNfOBXjYTdhJD4facM=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/favicon.ico"
+    },
+    {
+      "Identity": "/Users/michael.martinsen/Projects/cintix-leaf/Leaf.Web/wwwroot/js/app.js",
+      "SourceId": "Leaf.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/michael.martinsen/Projects/cintix-leaf/Leaf.Web/wwwroot/",
+      "BasePath": "_content/Leaf.Web",
+      "RelativePath": "js/app#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "18l1k2jgma",
+      "Integrity": "T9JIvcmSxUjl2+SkCpG8E2VGCOT+nFJvnPSZxYn95zI=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/app.js"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "css/app.css",
+      "AssetFile": "/Users/michael.martinsen/Projects/cintix-leaf/Leaf.Web/wwwroot/css/app.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "11375"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ieYAztV1VOyGiybejw/Ry/1kDr1g9HSKN5pBTnH96NY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 21 Apr 2026 05:53:47 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ieYAztV1VOyGiybejw/Ry/1kDr1g9HSKN5pBTnH96NY="
+        }
+      ]
+    },
+    {
+      "Route": "css/app.fmp7sg4ajt.css",
+      "AssetFile": "/Users/michael.martinsen/Projects/cintix-leaf/Leaf.Web/wwwroot/css/app.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "11375"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ieYAztV1VOyGiybejw/Ry/1kDr1g9HSKN5pBTnH96NY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 21 Apr 2026 05:53:47 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "fmp7sg4ajt"
+        },
+        {
+          "Name": "label",
+          "Value": "css/app.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ieYAztV1VOyGiybejw/Ry/1kDr1g9HSKN5pBTnH96NY="
+        }
+      ]
+    },
+    {
+      "Route": "favicon.61n19gt1b8.ico",
+      "AssetFile": "/Users/michael.martinsen/Projects/cintix-leaf/Leaf.Web/wwwroot/favicon.ico",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5430"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/x-icon"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Jtxf9L+5ITKRc1gIRl4VbUpGkRNfOBXjYTdhJD4facM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 21 Apr 2026 05:53:47 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "61n19gt1b8"
+        },
+        {
+          "Name": "label",
+          "Value": "favicon.ico"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Jtxf9L+5ITKRc1gIRl4VbUpGkRNfOBXjYTdhJD4facM="
+        }
+      ]
+    },
+    {
+      "Route": "favicon.ico",
+      "AssetFile": "/Users/michael.martinsen/Projects/cintix-leaf/Leaf.Web/wwwroot/favicon.ico",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5430"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/x-icon"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Jtxf9L+5ITKRc1gIRl4VbUpGkRNfOBXjYTdhJD4facM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 21 Apr 2026 05:53:47 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Jtxf9L+5ITKRc1gIRl4VbUpGkRNfOBXjYTdhJD4facM="
+        }
+      ]
+    },
+    {
+      "Route": "js/app.18l1k2jgma.js",
+      "AssetFile": "/Users/michael.martinsen/Projects/cintix-leaf/Leaf.Web/wwwroot/js/app.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "11888"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"T9JIvcmSxUjl2+SkCpG8E2VGCOT+nFJvnPSZxYn95zI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 21 Apr 2026 05:53:47 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "18l1k2jgma"
+        },
+        {
+          "Name": "label",
+          "Value": "js/app.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-T9JIvcmSxUjl2+SkCpG8E2VGCOT+nFJvnPSZxYn95zI="
+        }
+      ]
+    },
+    {
+      "Route": "js/app.js",
+      "AssetFile": "/Users/michael.martinsen/Projects/cintix-leaf/Leaf.Web/wwwroot/js/app.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "11888"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"T9JIvcmSxUjl2+SkCpG8E2VGCOT+nFJvnPSZxYn95zI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 21 Apr 2026 05:53:47 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-T9JIvcmSxUjl2+SkCpG8E2VGCOT+nFJvnPSZxYn95zI="
+        }
+      ]
+    }
+  ]
+}

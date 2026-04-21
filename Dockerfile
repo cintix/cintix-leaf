@@ -4,17 +4,13 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 COPY Leaf.sln ./
-COPY App/Core/Leaf.Core/Leaf.Core.csproj App/Core/Leaf.Core/
-COPY App/Features/Leaf.Features/Leaf.Features.csproj App/Features/Leaf.Features/
-COPY App/Infrastructure/Leaf.Infrastructure/Leaf.Infrastructure.csproj App/Infrastructure/Leaf.Infrastructure/
-COPY App/Runtime/Leaf.Runtime/Leaf.Runtime.csproj App/Runtime/Leaf.Runtime/
-COPY App/UI/Leaf.Web/Leaf.Web.csproj App/UI/Leaf.Web/
-COPY App/Tests/Leaf.Tests/Leaf.Tests.csproj App/Tests/Leaf.Tests/
+COPY Leaf.Web/Leaf.Web.csproj Leaf.Web/
+COPY Leaf.Tests/Leaf.Tests.csproj Leaf.Tests/
 
-RUN dotnet restore App/UI/Leaf.Web/Leaf.Web.csproj
+RUN dotnet restore Leaf.Web/Leaf.Web.csproj
 
 COPY . .
-RUN dotnet publish App/UI/Leaf.Web/Leaf.Web.csproj -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish Leaf.Web/Leaf.Web.csproj -c Release -o /app/publish /p:UseAppHost=false
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app

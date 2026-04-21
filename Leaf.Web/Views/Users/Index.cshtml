@@ -1,0 +1,67 @@
+@model Leaf.Web.UI.Models.Users.UsersPageViewModel
+@{
+    ViewData["Title"] = "Users";
+}
+<div class="grid two">
+    <article class="card">
+        <h2>Create user</h2>
+        <form method="post" asp-action="Create" class="stack-form">
+            @Html.AntiForgeryToken()
+            <label>Display name
+                <input class="leaf-input" name="displayName" required />
+            </label>
+            <label>Email
+                <input class="leaf-input" name="email" type="email" required />
+            </label>
+            <label>Password
+                <input class="leaf-input" name="password" type="password" required minlength="8" />
+            </label>
+            <label class="checkbox-line">
+                <input type="checkbox" name="isAdmin" value="true" />
+                Administrator
+            </label>
+            <button class="leaf-button" type="submit">Create user</button>
+        </form>
+    </article>
+
+    <article class="card">
+        <h2>User directory</h2>
+        <div class="table-wrap">
+            <table class="leaf-table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Role</th>
+                    <th>Workload</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var user in Model.Users)
+                {
+                    <tr>
+                        <td>@user.DisplayName</td>
+                        <td>@user.Email</td>
+                        <td>@(user.IsActive ? "Active" : "Inactive")</td>
+                        <td>@(user.IsAdmin ? "Admin" : "Member")</td>
+                        <td>@(Model.WorkloadByUserId.TryGetValue(user.Id, out var load) ? load : 0)</td>
+                        <td>
+                            <form method="post" asp-action="Update" class="inline-form">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@user.Id" />
+                                <input type="hidden" name="displayName" value="@user.DisplayName" />
+                                <input type="hidden" name="email" value="@user.Email" />
+                                <input type="hidden" name="isAdmin" value="@(user.IsAdmin ? "true" : "false")" />
+                                <input type="hidden" name="isActive" value="@(user.IsActive ? "false" : "true")" />
+                                <button class="leaf-button ghost small" type="submit">@(user.IsActive ? "Deactivate" : "Activate")</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </article>
+</div>

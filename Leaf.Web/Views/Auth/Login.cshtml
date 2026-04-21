@@ -1,0 +1,34 @@
+@model Leaf.Web.UI.Models.Auth.LoginViewModel
+@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = "Login";
+}
+<div class="auth-card">
+    <div>
+        <span class="eyebrow">Leaf workspace</span>
+        <h1>Welcome back</h1>
+        <p>Use your project account to continue.</p>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Model.Error))
+    {
+        <div class="inline-error">@Model.Error</div>
+    }
+
+    <form asp-action="Login" method="post" class="stack-form">
+        @Html.AntiForgeryToken()
+        <label>Email
+            <input asp-for="Email" class="leaf-input" autocomplete="username" />
+        </label>
+        <label>Password
+            <input asp-for="Password" type="password" class="leaf-input" autocomplete="current-password" />
+        </label>
+        <label class="checkbox-line">
+            <input asp-for="Remember" type="checkbox" />
+            Remember this session for 30 days
+        </label>
+        <button class="leaf-button" type="submit">Sign in</button>
+    </form>
+
+    <small class="hint">Demo admin: <code>admin@leaf.local</code> / <code>leafadmin</code></small>
+</div>

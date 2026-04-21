@@ -1,7 +1,0 @@
-{
-  "Leaf.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "\/home\/cintix\/Projects\/Leaf\/App\/Core\/Leaf.Core",
-  "Leaf.Features, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "\/home\/cintix\/Projects\/Leaf\/App\/Features\/Leaf.Features",
-  "Leaf.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "\/home\/cintix\/Projects\/Leaf\/App\/Infrastructure\/Leaf.Infrastructure",
-  "Leaf.Runtime, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "\/home\/cintix\/Projects\/Leaf\/App\/Runtime\/Leaf.Runtime",
-  "Leaf.Web, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "\/home\/cintix\/Projects\/Leaf\/App\/UI\/Leaf.Web"
-}
