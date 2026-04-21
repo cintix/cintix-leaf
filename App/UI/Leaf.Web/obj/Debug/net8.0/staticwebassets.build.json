@@ -1,0 +1,77 @@
+{
+  "Version": 1,
+  "Hash": "dwob/78Njerwc9A+XP0E+IzqWJStqbB8QKBbh9b6mro=",
+  "Source": "Leaf.Web",
+  "BasePath": "_content/Leaf.Web",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "Leaf.Web/wwwroot",
+      "Source": "Leaf.Web",
+      "ContentRoot": "/home/cintix/Projects/Leaf/App/UI/Leaf.Web/wwwroot/",
+      "BasePath": "_content/Leaf.Web",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/home/cintix/Projects/Leaf/App/UI/Leaf.Web/wwwroot/css/app.css",
+      "SourceId": "Leaf.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/cintix/Projects/Leaf/App/UI/Leaf.Web/wwwroot/",
+      "BasePath": "_content/Leaf.Web",
+      "RelativePath": "css/app.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/css/app.css"
+    },
+    {
+      "Identity": "/home/cintix/Projects/Leaf/App/UI/Leaf.Web/wwwroot/favicon.ico",
+      "SourceId": "Leaf.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/cintix/Projects/Leaf/App/UI/Leaf.Web/wwwroot/",
+      "BasePath": "_content/Leaf.Web",
+      "RelativePath": "favicon.ico",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/favicon.ico"
+    },
+    {
+      "Identity": "/home/cintix/Projects/Leaf/App/UI/Leaf.Web/wwwroot/js/app.js",
+      "SourceId": "Leaf.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/cintix/Projects/Leaf/App/UI/Leaf.Web/wwwroot/",
+      "BasePath": "_content/Leaf.Web",
+      "RelativePath": "js/app.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/app.js"
+    }
+  ]
+}

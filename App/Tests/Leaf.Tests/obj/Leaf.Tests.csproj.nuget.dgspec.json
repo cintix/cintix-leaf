@@ -1,0 +1,437 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/cintix/Projects/Leaf/App/Tests/Leaf.Tests/Leaf.Tests.csproj": {}
+  },
+  "projects": {
+    "/home/cintix/Projects/Leaf/App/Core/Leaf.Core/Leaf.Core.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/cintix/Projects/Leaf/App/Core/Leaf.Core/Leaf.Core.csproj",
+        "projectName": "Leaf.Core",
+        "projectPath": "/home/cintix/Projects/Leaf/App/Core/Leaf.Core/Leaf.Core.csproj",
+        "packagesPath": "/home/cintix/.nuget/packages/",
+        "outputPath": "/home/cintix/Projects/Leaf/App/Core/Leaf.Core/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/cintix/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.415/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/cintix/Projects/Leaf/App/Features/Leaf.Features/Leaf.Features.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/cintix/Projects/Leaf/App/Features/Leaf.Features/Leaf.Features.csproj",
+        "projectName": "Leaf.Features",
+        "projectPath": "/home/cintix/Projects/Leaf/App/Features/Leaf.Features/Leaf.Features.csproj",
+        "packagesPath": "/home/cintix/.nuget/packages/",
+        "outputPath": "/home/cintix/Projects/Leaf/App/Features/Leaf.Features/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/cintix/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/home/cintix/Projects/Leaf/App/Core/Leaf.Core/Leaf.Core.csproj": {
+                "projectPath": "/home/cintix/Projects/Leaf/App/Core/Leaf.Core/Leaf.Core.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.415/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/cintix/Projects/Leaf/App/Infrastructure/Leaf.Infrastructure/Leaf.Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/cintix/Projects/Leaf/App/Infrastructure/Leaf.Infrastructure/Leaf.Infrastructure.csproj",
+        "projectName": "Leaf.Infrastructure",
+        "projectPath": "/home/cintix/Projects/Leaf/App/Infrastructure/Leaf.Infrastructure/Leaf.Infrastructure.csproj",
+        "packagesPath": "/home/cintix/.nuget/packages/",
+        "outputPath": "/home/cintix/Projects/Leaf/App/Infrastructure/Leaf.Infrastructure/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/cintix/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/home/cintix/Projects/Leaf/App/Core/Leaf.Core/Leaf.Core.csproj": {
+                "projectPath": "/home/cintix/Projects/Leaf/App/Core/Leaf.Core/Leaf.Core.csproj"
+              },
+              "/home/cintix/Projects/Leaf/App/Features/Leaf.Features/Leaf.Features.csproj": {
+                "projectPath": "/home/cintix/Projects/Leaf/App/Features/Leaf.Features/Leaf.Features.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.Data.Sqlite": {
+              "target": "Package",
+              "version": "[8.0.10, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.415/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/cintix/Projects/Leaf/App/Runtime/Leaf.Runtime/Leaf.Runtime.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/cintix/Projects/Leaf/App/Runtime/Leaf.Runtime/Leaf.Runtime.csproj",
+        "projectName": "Leaf.Runtime",
+        "projectPath": "/home/cintix/Projects/Leaf/App/Runtime/Leaf.Runtime/Leaf.Runtime.csproj",
+        "packagesPath": "/home/cintix/.nuget/packages/",
+        "outputPath": "/home/cintix/Projects/Leaf/App/Runtime/Leaf.Runtime/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/cintix/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/home/cintix/Projects/Leaf/App/Core/Leaf.Core/Leaf.Core.csproj": {
+                "projectPath": "/home/cintix/Projects/Leaf/App/Core/Leaf.Core/Leaf.Core.csproj"
+              },
+              "/home/cintix/Projects/Leaf/App/Features/Leaf.Features/Leaf.Features.csproj": {
+                "projectPath": "/home/cintix/Projects/Leaf/App/Features/Leaf.Features/Leaf.Features.csproj"
+              },
+              "/home/cintix/Projects/Leaf/App/Infrastructure/Leaf.Infrastructure/Leaf.Infrastructure.csproj": {
+                "projectPath": "/home/cintix/Projects/Leaf/App/Infrastructure/Leaf.Infrastructure/Leaf.Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.415/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/cintix/Projects/Leaf/App/Tests/Leaf.Tests/Leaf.Tests.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/cintix/Projects/Leaf/App/Tests/Leaf.Tests/Leaf.Tests.csproj",
+        "projectName": "Leaf.Tests",
+        "projectPath": "/home/cintix/Projects/Leaf/App/Tests/Leaf.Tests/Leaf.Tests.csproj",
+        "packagesPath": "/home/cintix/.nuget/packages/",
+        "outputPath": "/home/cintix/Projects/Leaf/App/Tests/Leaf.Tests/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/cintix/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/home/cintix/Projects/Leaf/App/Core/Leaf.Core/Leaf.Core.csproj": {
+                "projectPath": "/home/cintix/Projects/Leaf/App/Core/Leaf.Core/Leaf.Core.csproj"
+              },
+              "/home/cintix/Projects/Leaf/App/Features/Leaf.Features/Leaf.Features.csproj": {
+                "projectPath": "/home/cintix/Projects/Leaf/App/Features/Leaf.Features/Leaf.Features.csproj"
+              },
+              "/home/cintix/Projects/Leaf/App/Infrastructure/Leaf.Infrastructure/Leaf.Infrastructure.csproj": {
+                "projectPath": "/home/cintix/Projects/Leaf/App/Infrastructure/Leaf.Infrastructure/Leaf.Infrastructure.csproj"
+              },
+              "/home/cintix/Projects/Leaf/App/Runtime/Leaf.Runtime/Leaf.Runtime.csproj": {
+                "projectPath": "/home/cintix/Projects/Leaf/App/Runtime/Leaf.Runtime/Leaf.Runtime.csproj"
+              },
+              "/home/cintix/Projects/Leaf/App/UI/Leaf.Web/Leaf.Web.csproj": {
+                "projectPath": "/home/cintix/Projects/Leaf/App/UI/Leaf.Web/Leaf.Web.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Mvc.Testing": {
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[17.8.0, )"
+            },
+            "coverlet.collector": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "xunit": {
+              "target": "Package",
+              "version": "[2.5.3, )"
+            },
+            "xunit.runner.visualstudio": {
+              "target": "Package",
+              "version": "[2.5.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.415/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/cintix/Projects/Leaf/App/UI/Leaf.Web/Leaf.Web.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/cintix/Projects/Leaf/App/UI/Leaf.Web/Leaf.Web.csproj",
+        "projectName": "Leaf.Web",
+        "projectPath": "/home/cintix/Projects/Leaf/App/UI/Leaf.Web/Leaf.Web.csproj",
+        "packagesPath": "/home/cintix/.nuget/packages/",
+        "outputPath": "/home/cintix/Projects/Leaf/App/UI/Leaf.Web/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/cintix/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/home/cintix/Projects/Leaf/App/Features/Leaf.Features/Leaf.Features.csproj": {
+                "projectPath": "/home/cintix/Projects/Leaf/App/Features/Leaf.Features/Leaf.Features.csproj"
+              },
+              "/home/cintix/Projects/Leaf/App/Runtime/Leaf.Runtime/Leaf.Runtime.csproj": {
+                "projectPath": "/home/cintix/Projects/Leaf/App/Runtime/Leaf.Runtime/Leaf.Runtime.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.415/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

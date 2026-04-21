@@ -1,0 +1,42 @@
+@model Leaf.Web.Models.Shell.ShellContextViewModel
+@{
+    ViewData["Title"] = "Projects";
+}
+<div class="grid two">
+    <article class="card">
+        <h2>Create project</h2>
+        <form method="post" asp-action="Create" class="stack-form">
+            @Html.AntiForgeryToken()
+            <label>Project key
+                <input class="leaf-input" name="key" placeholder="LEAF" maxlength="8" required />
+            </label>
+            <label>Name
+                <input class="leaf-input" name="name" placeholder="Leaf Product" required />
+            </label>
+            <label>Description
+                <textarea class="leaf-input" name="description" rows="4" placeholder="Short project brief"></textarea>
+            </label>
+            <button class="leaf-button" type="submit">Create project</button>
+        </form>
+    </article>
+
+    <article class="card">
+        <h2>Your projects</h2>
+        @if (Model.Projects.Count == 0)
+        {
+            <p class="muted">No projects yet. Create one to begin sprint planning.</p>
+        }
+        else
+        {
+            <ul class="project-list">
+                @foreach (var project in Model.Projects)
+                {
+                    <li>
+                        <a href="/projects/@project.Id"><strong>@project.Key</strong> @project.Name</a>
+                        <small>@project.Description</small>
+                    </li>
+                }
+            </ul>
+        }
+    </article>
+</div>

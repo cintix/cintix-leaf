@@ -1,0 +1,17 @@
+services:
+  leaf:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      LeafDatabase__Path: /app/Runtime/leaf.db
+      LeafRuntime__Urls: http://0.0.0.0:8080
+    volumes:
+      - leaf_data:/app/Runtime
+    restart: unless-stopped
+
+volumes:
+  leaf_data:

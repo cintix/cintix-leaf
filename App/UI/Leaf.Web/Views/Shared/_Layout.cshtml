@@ -1,0 +1,96 @@
+@using Leaf.Web.Models.Shell
+@{
+    var shell = new ShellContextViewModel();
+    if (Model is ShellContextViewModel directShell)
+    {
+        shell = directShell;
+    }
+    else if (Model is not null)
+    {
+        var shellProp = Model.GetType().GetProperty("Shell");
+        if (shellProp?.GetValue(Model) is ShellContextViewModel vmShell)
+        {
+            shell = vmShell;
+        }
+    }
+
+    var userInitials = shell.CurrentUser is null
+        ? "--"
+        : string.Concat(shell.CurrentUser.DisplayName.Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(x => x[0])).ToUpperInvariant();
+
+    var toastError = TempData["Error"]?.ToString() ?? string.Empty;
+    var toastInfo = TempData["Info"]?.ToString() ?? string.Empty;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Leaf</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,500;6..72,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
+</head>
+<body data-toast-error="@toastError" data-toast-info="@toastInfo">
+    <div class="app-shell">
+        <aside class="sidebar">
+            <a class="brand" href="/">
+                <span class="brand-mark">L</span>
+                <span>
+                    <strong>Leaf</strong>
+                    <small>Scrum Platform</small>
+                </span>
+            </a>
+
+            <nav class="nav">
+                <a class="nav-item @(shell.CurrentArea == "Dashboard" ? "active" : string.Empty)" href="/dashboard/@(shell.CurrentProjectId ?? shell.Projects.FirstOrDefault()?.Id)">Dashboard</a>
+                <a class="nav-item @(shell.CurrentArea == "Projects" ? "active" : string.Empty)" href="/projects">Projects</a>
+                <a class="nav-item @(shell.CurrentArea == "Users" ? "active" : string.Empty)" href="/users@(shell.CurrentProjectId.HasValue ? $"?projectId={shell.CurrentProjectId}" : string.Empty)">Users</a>
+                <a class="nav-item @(shell.CurrentArea == "Profile" ? "active" : string.Empty)" href="/auth/profile">Profile</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="avatar">@userInitials</div>
+                <div>
+                    <strong>@(shell.CurrentUser?.DisplayName ?? "Guest")</strong>
+                    <small>@(shell.CurrentUser?.Email ?? "")</small>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main">
+            <header class="topbar">
+                <div>
+                    <h1>@ViewData["Title"]</h1>
+                    <p class="subtitle">Scrum depth with modern execution speed.</p>
+                </div>
+                <div class="topbar-actions">
+                    @if (shell.Projects.Count > 0)
+                    {
+                        <select id="projectSwitcher" class="leaf-input compact" aria-label="Project switcher">
+                            @foreach (var p in shell.Projects)
+                            {
+                                <option value="@p.Id" selected="@(p.Id == (shell.CurrentProjectId ?? shell.Projects.First().Id))">@p.Key - @p.Name</option>
+                            }
+                        </select>
+                    }
+                    <form asp-controller="Auth" asp-action="Logout" method="post">
+                        @Html.AntiForgeryToken()
+                        <button class="leaf-button ghost" type="submit">Logout</button>
+                    </form>
+                </div>
+            </header>
+
+            <section class="content">
+                @RenderBody()
+            </section>
+        </main>
+    </div>
+
+    <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+    <script type="module" src="~/js/app.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

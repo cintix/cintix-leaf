@@ -1,0 +1,26 @@
+@model Leaf.Web.Models.Auth.ProfileViewModel
+@{
+    ViewData["Title"] = "Profile";
+}
+<div class="grid two">
+    <article class="card">
+        <h2>User profile</h2>
+        <dl class="pairs">
+            <dt>Name</dt><dd>@Model.User.DisplayName</dd>
+            <dt>Email</dt><dd>@Model.User.Email</dd>
+            <dt>Role</dt><dd>@(Model.User.IsAdmin ? "Administrator" : "Member")</dd>
+            <dt>Status</dt><dd>@(Model.User.IsActive ? "Active" : "Inactive")</dd>
+            <dt>Created</dt><dd>@Model.User.CreatedUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</dd>
+        </dl>
+    </article>
+
+    <article class="card">
+        <h2>Account security</h2>
+        <p>Leaf uses PBKDF2 password hashing and session-based authentication with optional persistent remember cookie.</p>
+        <ul class="flat-list">
+            <li>Session timeout: 30 days of inactivity</li>
+            <li>Remember token: 30 days</li>
+            <li>Server-side authorization checks on protected routes</li>
+        </ul>
+    </article>
+</div>

@@ -1,0 +1,11 @@
+/home/cintix/Projects/Leaf/App/Core/Leaf.Core/bin/Debug/net8.0/Leaf.Core.deps.json
+/home/cintix/Projects/Leaf/App/Core/Leaf.Core/bin/Debug/net8.0/Leaf.Core.dll
+/home/cintix/Projects/Leaf/App/Core/Leaf.Core/bin/Debug/net8.0/Leaf.Core.pdb
+/home/cintix/Projects/Leaf/App/Core/Leaf.Core/obj/Debug/net8.0/Leaf.Core.GeneratedMSBuildEditorConfig.editorconfig
+/home/cintix/Projects/Leaf/App/Core/Leaf.Core/obj/Debug/net8.0/Leaf.Core.AssemblyInfoInputs.cache
+/home/cintix/Projects/Leaf/App/Core/Leaf.Core/obj/Debug/net8.0/Leaf.Core.AssemblyInfo.cs
+/home/cintix/Projects/Leaf/App/Core/Leaf.Core/obj/Debug/net8.0/Leaf.Core.csproj.CoreCompileInputs.cache
+/home/cintix/Projects/Leaf/App/Core/Leaf.Core/obj/Debug/net8.0/Leaf.Core.dll
+/home/cintix/Projects/Leaf/App/Core/Leaf.Core/obj/Debug/net8.0/refint/Leaf.Core.dll
+/home/cintix/Projects/Leaf/App/Core/Leaf.Core/obj/Debug/net8.0/Leaf.Core.pdb
+/home/cintix/Projects/Leaf/App/Core/Leaf.Core/obj/Debug/net8.0/ref/Leaf.Core.dll
