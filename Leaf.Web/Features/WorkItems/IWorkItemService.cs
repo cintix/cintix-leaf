@@ -16,4 +16,6 @@ public interface IWorkItemService
     Task MoveToSprintAsync(int projectId, int sprintId, IReadOnlyCollection<int> itemIds, CancellationToken ct = default);
     Task<IReadOnlyList<Comment>> GetCommentsAsync(int workItemId, CancellationToken ct = default);
     Task<int> AddCommentAsync(Comment comment, CancellationToken ct = default);
+    Task<WorkItemDetailDto?> GetDetailAsync(int id, CancellationToken ct = default);
+    Task<Result> DeleteAsync(int id, int actorUserId, CancellationToken ct = default);
 }

@@ -13,6 +13,7 @@ public interface ILeafRepository
 
     Task<IReadOnlyList<Project>> GetProjectsForUserAsync(int userId, bool includeArchived, CancellationToken ct = default);
     Task<Project?> GetProjectAsync(int projectId, CancellationToken ct = default);
+    Task<Project?> GetProjectByKeyAsync(string key, CancellationToken ct = default);
     Task<int> CreateProjectAsync(CreateProjectInput input, CancellationToken ct = default);
     Task UpdateProjectAsync(UpdateProjectInput input, CancellationToken ct = default);
     Task<IReadOnlyList<User>> GetProjectMembersAsync(int projectId, CancellationToken ct = default);
@@ -21,6 +22,8 @@ public interface ILeafRepository
     Task<IReadOnlyList<WorkItem>> GetBacklogAsync(WorkItemSearchFilters filters, CancellationToken ct = default);
     Task<IReadOnlyList<WorkItem>> GetBoardItemsAsync(int projectId, int? sprintId, CancellationToken ct = default);
     Task<WorkItem?> GetWorkItemAsync(int id, CancellationToken ct = default);
+    Task<WorkItem?> GetWorkItemByKeyAsync(string key, CancellationToken ct = default);
+    Task<string> GetNextWorkItemKeyAsync(int projectId, CancellationToken ct = default);
     Task<int> CreateWorkItemAsync(WorkItem item, CancellationToken ct = default);
     Task UpdateWorkItemAsync(UpdateWorkItemInput input, CancellationToken ct = default);
     Task MoveWorkItemAsync(int itemId, WorkItemStatus status, int columnOrder, int? sprintId, CancellationToken ct = default);
@@ -42,10 +45,17 @@ public interface ILeafRepository
 
     Task AddActivityAsync(ActivityEntry activity, CancellationToken ct = default);
     Task<IReadOnlyList<ActivityEntry>> GetRecentActivityAsync(int projectId, int take, CancellationToken ct = default);
+    Task<IReadOnlyList<ActivityEntry>> GetActivityForWorkItemAsync(int workItemId, CancellationToken ct = default);
+    Task DeleteWorkItemAsync(int id, CancellationToken ct = default);
 
     Task<IReadOnlyList<(DateOnly Day, int Remaining)>> GetBurndownAsync(int sprintId, CancellationToken ct = default);
     Task<IReadOnlyList<VelocityPoint>> GetVelocityAsync(int projectId, CancellationToken ct = default);
     Task<ThroughputSummary> GetThroughputSummaryAsync(int projectId, CancellationToken ct = default);
 
     Task SeedDemoDataIfEmptyAsync(CancellationToken ct = default);
+
+    Task<int> AddAttachmentAsync(Attachment attachment, CancellationToken ct = default);
+    Task<IReadOnlyList<Attachment>> GetAttachmentsAsync(int workItemId, CancellationToken ct = default);
+    Task<Attachment?> GetAttachmentAsync(int id, CancellationToken ct = default);
+    Task DeleteAttachmentAsync(int id, CancellationToken ct = default);
 }

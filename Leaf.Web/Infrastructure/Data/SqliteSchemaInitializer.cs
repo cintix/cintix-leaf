@@ -17,6 +17,7 @@ public sealed class SqliteSchemaInitializer(
         await using var transaction = (SqliteTransaction)await connection.BeginTransactionAsync(ct);
 
         await ExecuteSchemaAsync(connection, transaction, ct);
+        await MigrateSchemaAsync(connection, transaction, ct);
         await SeedUsersAsync(connection, transaction, ct);
         await SeedProjectDataAsync(connection, transaction, ct);
 
@@ -73,6 +74,7 @@ public sealed class SqliteSchemaInitializer(
 
                            CREATE TABLE IF NOT EXISTS WorkItems (
                                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                               Key TEXT NOT NULL DEFAULT '',
                                ProjectId INTEGER NOT NULL,
                                SprintId INTEGER,
                                ParentId INTEGER,
@@ -155,12 +157,58 @@ public sealed class SqliteSchemaInitializer(
                            CREATE INDEX IF NOT EXISTS IX_Comments_WorkItemId ON Comments(WorkItemId);
                            CREATE INDEX IF NOT EXISTS IX_Activity_Project_Created ON Activity(ProjectId, CreatedUtc DESC);
                            CREATE INDEX IF NOT EXISTS IX_Activity_WorkItemId ON Activity(WorkItemId);
+
+                           CREATE TABLE IF NOT EXISTS Attachments (
+                               Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                               WorkItemId INTEGER NOT NULL,
+                               FileName TEXT NOT NULL,
+                               ContentType TEXT NOT NULL,
+                               FileSize INTEGER NOT NULL,
+                               StoredPath TEXT NOT NULL,
+                               UploadedByUserId INTEGER NOT NULL,
+                               CreatedUtc TEXT NOT NULL,
+                               FOREIGN KEY (WorkItemId) REFERENCES WorkItems(Id) ON DELETE CASCADE,
+                               FOREIGN KEY (UploadedByUserId) REFERENCES Users(Id)
+                           );
+
+                           CREATE INDEX IF NOT EXISTS IX_Attachments_WorkItemId ON Attachments(WorkItemId);
                            """;
 
         await using var command = connection.CreateCommand();
         command.Transaction = transaction;
         command.CommandText = sql;
         await command.ExecuteNonQueryAsync(ct);
+    }
+
+    private static async Task MigrateSchemaAsync(SqliteConnection connection, SqliteTransaction transaction, CancellationToken ct)
+    {
+        // Add Key column to existing WorkItems tables
+        try
+        {
+            await using var cmd = connection.CreateCommand();
+            cmd.Transaction = transaction;
+            cmd.CommandText = "ALTER TABLE WorkItems ADD COLUMN Key TEXT NOT NULL DEFAULT '';";
+            await cmd.ExecuteNonQueryAsync(ct);
+        }
+        catch (SqliteException) { /* Column already exists */ }
+
+        // Backfill keys for existing work items that don't have one
+        try
+        {
+            await using var cmd = connection.CreateCommand();
+            cmd.Transaction = transaction;
+            cmd.CommandText = """
+                              UPDATE WorkItems
+                              SET Key = (SELECT p.Key || '-' || w.Seq FROM (
+                                  SELECT wi.Id, ROW_NUMBER() OVER (PARTITION BY wi.ProjectId ORDER BY wi.Id) AS Seq, p.Key
+                                  FROM WorkItems wi
+                                  JOIN Projects p ON p.Id = wi.ProjectId
+                              ) w WHERE w.Id = WorkItems.Id)
+                              WHERE Key = '';
+                              """;
+            await cmd.ExecuteNonQueryAsync(ct);
+        }
+        catch (SqliteException) { /* SQLite version may not support window functions */ }
     }
 
     private async Task SeedUsersAsync(SqliteConnection connection, SqliteTransaction tx, CancellationToken ct)
@@ -258,9 +306,9 @@ public sealed class SqliteSchemaInitializer(
         sprintCmd.Parameters.AddWithValue("@created", now.ToString("O"));
         var sprintId = Convert.ToInt32(await sprintCmd.ExecuteScalarAsync(ct));
 
-        await InsertWorkItemAsync(connection, tx, projectId, sprintId, "Build dashboard shell", "Create polished navigation and summary cards", 2, 4, 2, 2, 1, "frontend,ux", 8, 1, now, ct);
-        await InsertWorkItemAsync(connection, tx, projectId, sprintId, "Backlog drag and rank", "Enable smooth ranking in backlog", 2, 2, 3, 3, 1, "backlog,core", 5, 2, now, ct);
-        await InsertWorkItemAsync(connection, tx, projectId, null, "API filters", "Advanced text + assignee + label filters", 3, 1, 2, 3, 1, "api", 3, 3, now, ct);
+        await InsertWorkItemAsync(connection, tx, projectId, sprintId, "LEAF-1", "Build dashboard shell", "Create polished navigation and summary cards", 2, 4, 2, 2, 1, "frontend,ux", 8, 1, now, ct);
+        await InsertWorkItemAsync(connection, tx, projectId, sprintId, "LEAF-2", "Backlog drag and rank", "Enable smooth ranking in backlog", 2, 2, 3, 3, 1, "backlog,core", 5, 2, now, ct);
+        await InsertWorkItemAsync(connection, tx, projectId, null, "LEAF-3", "API filters", "Advanced text + assignee + label filters", 3, 1, 2, 3, 1, "api", 3, 3, now, ct);
 
         foreach (var (name, color) in new[]
                  {
@@ -285,6 +333,7 @@ public sealed class SqliteSchemaInitializer(
         SqliteTransaction tx,
         int projectId,
         int? sprintId,
+        string key,
         string title,
         string description,
         int type,
@@ -301,11 +350,12 @@ public sealed class SqliteSchemaInitializer(
         await using var cmd = connection.CreateCommand();
         cmd.Transaction = tx;
         cmd.CommandText = """
-                          INSERT INTO WorkItems(ProjectId, SprintId, ParentId, Title, Description, Type, Status, Priority, AssigneeUserId, ReporterUserId,
+                          INSERT INTO WorkItems(Key, ProjectId, SprintId, ParentId, Title, Description, Type, Status, Priority, AssigneeUserId, ReporterUserId,
                                                 LabelsCsv, StoryPoints, DueDate, BacklogRank, ColumnOrder, CreatedUtc, UpdatedUtc)
-                          VALUES(@projectId, @sprintId, NULL, @title, @description, @type, @status, @priority, @assignee, @reporter,
+                          VALUES(@key, @projectId, @sprintId, NULL, @title, @description, @type, @status, @priority, @assignee, @reporter,
                                  @labels, @storyPoints, NULL, @rank, @columnOrder, @created, @updated);
                           """;
+        cmd.Parameters.AddWithValue("@key", key);
         cmd.Parameters.AddWithValue("@projectId", projectId);
         cmd.Parameters.AddWithValue("@sprintId", sprintId.HasValue ? sprintId.Value : DBNull.Value);
         cmd.Parameters.AddWithValue("@title", title);

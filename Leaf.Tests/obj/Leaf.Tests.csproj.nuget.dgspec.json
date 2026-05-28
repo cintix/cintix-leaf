@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/michael.martinsen/Projects/cintix-leaf/Leaf.Tests/Leaf.Tests.csproj": {}
+    "/home/cintix/Projects/cintix-leaf/Leaf.Tests/Leaf.Tests.csproj": {}
   },
   "projects": {
-    "/Users/michael.martinsen/Projects/cintix-leaf/Leaf.Tests/Leaf.Tests.csproj": {
+    "/home/cintix/Projects/cintix-leaf/Leaf.Tests/Leaf.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/michael.martinsen/Projects/cintix-leaf/Leaf.Tests/Leaf.Tests.csproj",
+        "projectUniqueName": "/home/cintix/Projects/cintix-leaf/Leaf.Tests/Leaf.Tests.csproj",
         "projectName": "Leaf.Tests",
-        "projectPath": "/Users/michael.martinsen/Projects/cintix-leaf/Leaf.Tests/Leaf.Tests.csproj",
-        "packagesPath": "/Users/michael.martinsen/.nuget/packages/",
-        "outputPath": "/Users/michael.martinsen/Projects/cintix-leaf/Leaf.Tests/obj/",
+        "projectPath": "/home/cintix/Projects/cintix-leaf/Leaf.Tests/Leaf.Tests.csproj",
+        "packagesPath": "/home/cintix/.nuget/packages/",
+        "outputPath": "/home/cintix/Projects/cintix-leaf/Leaf.Tests/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/michael.martinsen/.nuget/NuGet/NuGet.Config"
+          "/home/cintix/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -26,8 +26,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/Users/michael.martinsen/Projects/cintix-leaf/Leaf.Web/Leaf.Web.csproj": {
-                "projectPath": "/Users/michael.martinsen/Projects/cintix-leaf/Leaf.Web/Leaf.Web.csproj"
+              "/home/cintix/Projects/cintix-leaf/Leaf.Web/Leaf.Web.csproj": {
+                "projectPath": "/home/cintix/Projects/cintix-leaf/Leaf.Web/Leaf.Web.csproj"
               }
             }
           }
@@ -41,8 +41,7 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.200"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -85,21 +84,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/Users/michael.martinsen/.dotnet/sdk/9.0.200/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.415/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/Users/michael.martinsen/Projects/cintix-leaf/Leaf.Web/Leaf.Web.csproj": {
+    "/home/cintix/Projects/cintix-leaf/Leaf.Web/Leaf.Web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/michael.martinsen/Projects/cintix-leaf/Leaf.Web/Leaf.Web.csproj",
+        "projectUniqueName": "/home/cintix/Projects/cintix-leaf/Leaf.Web/Leaf.Web.csproj",
         "projectName": "Leaf.Web",
-        "projectPath": "/Users/michael.martinsen/Projects/cintix-leaf/Leaf.Web/Leaf.Web.csproj",
-        "packagesPath": "/Users/michael.martinsen/.nuget/packages/",
-        "outputPath": "/Users/michael.martinsen/Projects/cintix-leaf/Leaf.Web/obj/",
+        "projectPath": "/home/cintix/Projects/cintix-leaf/Leaf.Web/Leaf.Web.csproj",
+        "packagesPath": "/home/cintix/.nuget/packages/",
+        "outputPath": "/home/cintix/Projects/cintix-leaf/Leaf.Web/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/michael.martinsen/.nuget/NuGet/NuGet.Config"
+          "/home/cintix/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -122,8 +121,7 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.200"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -153,7 +151,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/Users/michael.martinsen/.dotnet/sdk/9.0.200/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.415/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

@@ -44,7 +44,7 @@
             </a>
 
             <nav class="nav">
-                <a class="nav-item @(shell.CurrentArea == "Dashboard" ? "active" : string.Empty)" href="/dashboard/@(shell.CurrentProjectId ?? shell.Projects.FirstOrDefault()?.Id)">Dashboard</a>
+                <a class="nav-item @(shell.CurrentArea == "Dashboard" ? "active" : string.Empty)" href="/dashboard/@(shell.Projects.FirstOrDefault(p => p.Id == shell.CurrentProjectId)?.Key ?? shell.Projects.FirstOrDefault()?.Key)">Dashboard</a>
                 <a class="nav-item @(shell.CurrentArea == "Projects" ? "active" : string.Empty)" href="/projects">Projects</a>
                 <a class="nav-item @(shell.CurrentArea == "Users" ? "active" : string.Empty)" href="/users@(shell.CurrentProjectId.HasValue ? $"?projectId={shell.CurrentProjectId}" : string.Empty)">Users</a>
                 <a class="nav-item @(shell.CurrentArea == "Profile" ? "active" : string.Empty)" href="/auth/profile">Profile</a>
@@ -71,7 +71,7 @@
                         <select id="projectSwitcher" class="leaf-input compact" aria-label="Project switcher">
                             @foreach (var p in shell.Projects)
                             {
-                                <option value="@p.Id" selected="@(p.Id == (shell.CurrentProjectId ?? shell.Projects.First().Id))">@p.Key - @p.Name</option>
+                                <option value="@p.Key" selected="@(p.Id == (shell.CurrentProjectId ?? shell.Projects.First().Id))">@p.Key - @p.Name</option>
                             }
                         </select>
                     }

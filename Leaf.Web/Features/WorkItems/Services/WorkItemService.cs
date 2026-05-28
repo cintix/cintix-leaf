@@ -34,9 +34,11 @@ public sealed class WorkItemService(ILeafRepository repository, IClock clock) : 
             null), ct);
 
         var maxRank = existing.Count == 0 ? 0 : existing.Max(x => x.BacklogRank);
+        var key = await repository.GetNextWorkItemKeyAsync(input.ProjectId, ct);
 
         var workItem = new WorkItem
         {
+            Key = key,
             ProjectId = input.ProjectId,
             SprintId = input.SprintId,
             ParentId = input.ParentId,
@@ -141,4 +143,109 @@ public sealed class WorkItemService(ILeafRepository repository, IClock clock) : 
 
     public Task<int> AddCommentAsync(Comment comment, CancellationToken ct = default)
         => repository.AddCommentAsync(comment, ct);
+
+    public async Task<WorkItemDetailDto?> GetDetailAsync(int id, CancellationToken ct = default)
+    {
+        var item = await repository.GetWorkItemAsync(id, ct);
+        if (item is null) return null;
+
+        var comments = await repository.GetCommentsAsync(id, ct);
+        var activity = await repository.GetActivityForWorkItemAsync(id, ct);
+        var labels = await repository.GetLabelsAsync(item.ProjectId, ct);
+        var users = await repository.GetUsersAsync(includeInactive: false, ct);
+
+        var reporter = users.FirstOrDefault(u => u.Id == item.ReporterUserId)?.DisplayName;
+        var assignee = item.AssigneeUserId.HasValue
+            ? users.FirstOrDefault(u => u.Id == item.AssigneeUserId.Value)?.DisplayName
+            : null;
+
+        var attachments = await repository.GetAttachmentsAsync(id, ct);
+        var attachmentDtos = attachments.Select(a => new AttachmentDto
+        {
+            Id = a.Id,
+            FileName = a.FileName,
+            ContentType = a.ContentType,
+            FileSize = a.FileSize,
+            UploadedByUserId = a.UploadedByUserId,
+            UploadedByName = users.FirstOrDefault(u => u.Id == a.UploadedByUserId)?.DisplayName ?? "Unknown",
+            CreatedUtc = a.CreatedUtc.ToString("O")
+        }).ToList();
+
+        var commentDtos = new List<CommentDto>();
+        foreach (var c in comments)
+        {
+            commentDtos.Add(new CommentDto
+            {
+                Id = c.Id,
+                AuthorUserId = c.AuthorUserId,
+                AuthorName = users.FirstOrDefault(u => u.Id == c.AuthorUserId)?.DisplayName ?? "Unknown",
+                Body = c.Body,
+                CreatedUtc = c.CreatedUtc.ToString("O")
+            });
+        }
+
+        var activityDtos = new List<ActivityDto>();
+        foreach (var a in activity)
+        {
+            activityDtos.Add(new ActivityDto
+            {
+                Id = a.Id,
+                ActorUserId = a.ActorUserId,
+                ActorName = users.FirstOrDefault(u => u.Id == a.ActorUserId)?.DisplayName ?? "Unknown",
+                Kind = a.Kind,
+                Description = a.Description,
+                CreatedUtc = a.CreatedUtc.ToString("O")
+            });
+        }
+
+        var project = await repository.GetProjectAsync(item.ProjectId, ct);
+
+        return new WorkItemDetailDto
+        {
+            Id = item.Id,
+            Key = item.Key,
+            ProjectKey = project?.Key ?? string.Empty,
+            ProjectId = item.ProjectId,
+            SprintId = item.SprintId,
+            Title = item.Title,
+            Description = item.Description,
+            Type = item.Type.ToString(),
+            Status = item.Status.ToString(),
+            Priority = item.Priority.ToString(),
+            AssigneeUserId = item.AssigneeUserId,
+            AssigneeName = assignee,
+            ReporterUserId = item.ReporterUserId,
+            ReporterName = reporter,
+            LabelsCsv = item.LabelsCsv,
+            StoryPoints = item.StoryPoints,
+            DueDate = item.DueDate?.ToString("yyyy-MM-dd"),
+            CreatedUtc = item.CreatedUtc.ToString("O"),
+            Comments = commentDtos,
+            Activity = activityDtos,
+            Labels = labels.Select(l => new LabelDto { Id = l.Id, Name = l.Name, ColorHex = l.ColorHex }).ToList(),
+            Users = users.Select(u => new UserDto { Id = u.Id, DisplayName = u.DisplayName }).ToList(),
+            Attachments = attachmentDtos
+        };
+    }
+
+    public async Task<Result> DeleteAsync(int id, int actorUserId, CancellationToken ct = default)
+    {
+        var existing = await repository.GetWorkItemAsync(id, ct);
+        if (existing is null)
+        {
+            return Result.Failure(Error.NotFound("Work item not found."));
+        }
+
+        await repository.AddActivityAsync(new ActivityEntry
+        {
+            ProjectId = existing.ProjectId,
+            ActorUserId = actorUserId,
+            Kind = "work_item_deleted",
+            Description = $"Deleted {existing.Type}: {existing.Title}",
+            CreatedUtc = clock.UtcNow
+        }, ct);
+
+        await repository.DeleteWorkItemAsync(id, ct);
+        return Result.Success();
+    }
 }

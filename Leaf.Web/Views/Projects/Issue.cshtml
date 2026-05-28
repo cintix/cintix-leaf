@@ -1,0 +1,267 @@
+@model Leaf.Web.Features.WorkItems.WorkItemDetailDto
+@{
+    ViewData["Title"] = $"{Model.Key} - {Model.Title}";
+}
+<div class="workspace" data-project-id="@Model.ProjectId">
+    <div class="card issue-header">
+        <div>
+            <a href="/projects/@Model.ProjectKey" class="muted" style="font-size:.85rem;">&larr; @Model.ProjectKey</a>
+            <h2>@Model.Key: @Model.Title</h2>
+            <small>Created @DateTime.Parse(Model.CreatedUtc).ToLocalTime().ToString("MMM dd, yyyy HH:mm") · Reporter: @Model.ReporterName</small>
+        </div>
+    </div>
+
+    <div class="grid two">
+        <article class="card">
+            <div class="detail-field">
+                <label>Title</label>
+                <div class="editable" data-field="title" data-id="@Model.Id">@Model.Title</div>
+            </div>
+            <div class="detail-field">
+                <label>Description</label>
+                <div class="editable" data-field="description" data-id="@Model.Id" data-type="textarea">@(string.IsNullOrWhiteSpace(Model.Description) ? "No description — click to add" : Model.Description)</div>
+            </div>
+            <div class="detail-section">
+                <div class="inline-grid" style="grid-template-columns:1fr 1fr 1fr;">
+                    <div class="detail-field">
+                        <label>Type</label>
+                        <select class="leaf-input auto-save" data-field="type" data-id="@Model.Id">
+                            @foreach (var t in new[] { "Epic", "Story", "Task", "Bug", "Subtask" })
+                            {
+                                var val = Array.IndexOf(new[] { "Epic", "Story", "Task", "Bug", "Subtask" }, t) + 1;
+                                <option value="@val" selected="@(Model.Type == t)">@t</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="detail-field">
+                        <label>Status</label>
+                        <select class="leaf-input auto-save" data-field="status" data-id="@Model.Id">
+                            @foreach (var s in new[] { "ToDo", "InProgress", "Review", "Done" })
+                            {
+                                var val = Array.IndexOf(new[] { "ToDo", "InProgress", "Review", "Done" }, s) + 1;
+                                <option value="@val" selected="@(Model.Status == s)">@s.Replace("InProgress", "In Progress")</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="detail-field">
+                        <label>Priority</label>
+                        <select class="leaf-input auto-save" data-field="priority" data-id="@Model.Id">
+                            @foreach (var p in new[] { "Low", "Medium", "High", "Critical" })
+                            {
+                                var val = Array.IndexOf(new[] { "Low", "Medium", "High", "Critical" }, p) + 1;
+                                <option value="@val" selected="@(Model.Priority == p)">@p</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="detail-field">
+                        <label>Assignee</label>
+                        <select class="leaf-input auto-save" data-field="assigneeUserId" data-id="@Model.Id">
+                            <option value="">Unassigned</option>
+                            @foreach (var u in Model.Users)
+                            {
+                                <option value="@u.Id" selected="@(u.Id == Model.AssigneeUserId)">@u.DisplayName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="detail-field">
+                        <label>Story Points</label>
+                        <input class="leaf-input auto-save" type="number" min="0" data-field="storyPoints" data-id="@Model.Id" value="@Model.StoryPoints" />
+                    </div>
+                    <div class="detail-field">
+                        <label>Due Date</label>
+                        <input class="leaf-input auto-save" type="date" data-field="dueDate" data-id="@Model.Id" value="@Model.DueDate" />
+                    </div>
+                </div>
+            </div>
+            <div class="detail-field">
+                <label>Labels</label>
+                <div class="label-stack">
+                    @if (!string.IsNullOrWhiteSpace(Model.LabelsCsv))
+                    {
+                        @foreach (var label in Model.LabelsCsv.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                        {
+                            var style = Model.Labels.FirstOrDefault(x => x.Name.Equals(label, StringComparison.OrdinalIgnoreCase))?.ColorHex ?? "#92A09A";
+                            <span class="label" style="--label-color:@style">@label</span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="muted">No labels</span>
+                    }
+                </div>
+            </div>
+
+            <div class="detail-actions">
+                <form method="post" action="/api/workitems/@Model.Id" onsubmit="return confirm('Delete @Model.Key? This cannot be undone.')" style="display:inline;">
+                    <button class="leaf-button ghost" style="color:var(--danger);" id="issue-delete-btn">Delete</button>
+                </form>
+            </div>
+        </article>
+
+        <article>
+            <div class="card">
+                <h3>Attachments <small>(@Model.Attachments.Count)</small></h3>
+                @if (Model.Attachments.Count == 0)
+                {
+                    <p class="muted">No attachments yet.</p>
+                }
+                else
+                {
+                    @foreach (var a in Model.Attachments)
+                    {
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;">
+                            <a href="/api/attachments/@a.Id" download="@a.FileName" style="font-weight:600;color:var(--accent);">@a.FileName</a>
+                            <small>@(a.FileSize < 1024 ? $"{a.FileSize} B" : a.FileSize < 1024*1024 ? $"{a.FileSize/1024.0:F1} KB" : $"{a.FileSize/(1024.0*1024.0):F1} MB")</small>
+                        </div>
+                    }
+                }
+                <div style="margin-top:var(--space-2);">
+                    <input type="file" id="issue-file-input" hidden />
+                    <button class="leaf-button ghost small" id="issue-upload-btn">Attach file</button>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:var(--space-4);">
+                <h3>Comments <small>(@Model.Comments.Count)</small></h3>
+                @if (Model.Comments.Count == 0)
+                {
+                    <p class="muted">No comments yet.</p>
+                }
+                else
+                {
+                    @foreach (var c in Model.Comments)
+                    {
+                        <div class="comment-item">
+                            <strong>@c.AuthorName</strong>
+                            <small>@DateTime.Parse(c.CreatedUtc).ToLocalTime().ToString("MMM dd, HH:mm")</small>
+                            <p>@c.Body</p>
+                        </div>
+                    }
+                }
+                <div class="quick-comment">
+                    <input class="leaf-input" id="issue-comment-input" placeholder="Add a comment..." />
+                    <button class="leaf-button ghost small" id="issue-comment-btn">Comment</button>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:var(--space-4);">
+                <h3>Activity</h3>
+                @if (Model.Activity.Count == 0)
+                {
+                    <p class="muted">No activity yet.</p>
+                }
+                else
+                {
+                    <ul class="activity-list">
+                        @foreach (var a in Model.Activity)
+                        {
+                            <li>
+                                <span>@a.Description</span>
+                                <small>@DateTime.Parse(a.CreatedUtc).ToLocalTime().ToString("MMM dd, HH:mm")</small>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </article>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Click-to-edit for text fields
+    document.querySelectorAll('.editable').forEach(el => {
+        el.addEventListener('click', () => {
+            if (el.querySelector('input, textarea')) return;
+            const field = el.dataset.field;
+            const id = Number(el.dataset.id);
+            const isTextarea = el.dataset.type === 'textarea';
+            const current = el.textContent.trim();
+            const input = document.createElement(isTextarea ? 'textarea' : 'input');
+            input.className = 'leaf-input';
+            if (isTextarea) input.rows = 4;
+            input.value = current === 'No description — click to add' ? '' : current;
+            el.innerHTML = '';
+            el.appendChild(input);
+            input.focus();
+            const save = async () => {
+                const val = input.value;
+                el.textContent = val || (isTextarea ? 'No description — click to add' : '');
+                try {
+                    await fetch(`/api/workitems/${id}`, {
+                        method: 'PUT',
+                        headers: {'Content-Type':'application/json'},
+                        body: JSON.stringify({[field]: val, title: field === 'title' ? val : '', description: field === 'description' ? val : '', type: 2, status: 1, priority: 2, assigneeUserId: null, storyPoints: 0, labels: '', dueDate: null})
+                    });
+                } catch {}
+            };
+            input.addEventListener('blur', save);
+            input.addEventListener('keydown', e => { if (e.key === 'Enter' && !isTextarea) { e.preventDefault(); save(); } });
+        });
+    });
+
+    // Auto-save for selects/inputs
+    document.querySelectorAll('.auto-save').forEach(el => {
+        el.addEventListener('change', async () => {
+            const id = Number(el.dataset.id);
+            const field = el.dataset.field;
+            const val = el.type === 'number' ? Number(el.value) : (el.value || null);
+            const payload = {title:'', description:'', type:2, status:1, priority:2, assigneeUserId:null, storyPoints:0, labels:'', dueDate:null};
+            if (field === 'type') { payload.type = Number(val); payload.status = 1; payload.priority = 2; }
+            if (field === 'status') payload.status = Number(val);
+            if (field === 'priority') payload.priority = Number(val);
+            if (field === 'assigneeUserId') payload.assigneeUserId = val ? Number(val) : null;
+            if (field === 'storyPoints') payload.storyPoints = val || 0;
+            if (field === 'dueDate') payload.dueDate = val || null;
+            try { await fetch(`/api/workitems/${id}`, {method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}); } catch {}
+        });
+    });
+
+    // Comments
+    const commentBtn = document.querySelector('#issue-comment-btn');
+    const commentInput = document.querySelector('#issue-comment-input');
+    if (commentBtn && commentInput) {
+        commentBtn.addEventListener('click', async () => {
+            const body = commentInput.value.trim();
+            if (!body) return;
+            commentBtn.disabled = true;
+            try {
+                await fetch('/api/workitems/comment', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({workItemId:@Model.Id,body})});
+                window.location.reload();
+            } catch { commentBtn.disabled = false; }
+        });
+        commentInput.addEventListener('keydown', e => { if (e.key === 'Enter') commentBtn.click(); });
+    }
+
+    // Attachments
+    const uploadBtn = document.querySelector('#issue-upload-btn');
+    const fileInput = document.querySelector('#issue-file-input');
+    if (uploadBtn && fileInput) {
+        uploadBtn.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', async () => {
+            const file = fileInput.files[0];
+            if (!file) return;
+            const fd = new FormData();
+            fd.append('file', file);
+            uploadBtn.disabled = true;
+            try {
+                await fetch('/api/workitems/@Model.Id/attachments', {method:'POST',body:fd});
+                window.location.reload();
+            } catch { uploadBtn.disabled = false; }
+        });
+    }
+
+    // Delete
+    const deleteBtn = document.querySelector('#issue-delete-btn');
+    if (deleteBtn) {
+        deleteBtn.addEventListener('click', async e => {
+            e.preventDefault();
+            if (!confirm('Delete @Model.Key? This cannot be undone.')) return;
+            const resp = await fetch('/api/workitems/@Model.Id', {method:'DELETE'});
+            if (resp.ok) window.location.href = '/projects/@Model.ProjectKey';
+        });
+    }
+});
+</script>
+}

@@ -3,6 +3,7 @@ namespace Leaf.Web.Features.Shared.Models;
 public sealed class WorkItem
 {
     public int Id { get; set; }
+    public string Key { get; set; } = string.Empty;
     public int ProjectId { get; set; }
     public int? SprintId { get; set; }
     public int? ParentId { get; set; }

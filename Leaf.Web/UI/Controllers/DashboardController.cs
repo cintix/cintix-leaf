@@ -22,8 +22,8 @@ public sealed class DashboardController : LeafControllerBase
     }
 
     [HttpGet("/")]
-    [HttpGet("dashboard/{projectId?}")]
-    public async Task<IActionResult> Index(int? projectId, CancellationToken ct)
+    [HttpGet("dashboard/{projectKey?}")]
+    public async Task<IActionResult> Index(string? projectKey, CancellationToken ct)
     {
         if (!CurrentUserId.HasValue)
         {
@@ -36,12 +36,22 @@ public sealed class DashboardController : LeafControllerBase
             return RedirectToAction("Index", "Projects");
         }
 
-        var selectedProjectId = projectId ?? projects[0].Id;
-        var snapshot = await _dashboardService.GetSnapshotAsync(selectedProjectId, CurrentUserId.Value, ct);
+        Leaf.Web.Features.Shared.Models.Project? selectedProject;
+        if (!string.IsNullOrWhiteSpace(projectKey))
+        {
+            selectedProject = await Repository.GetProjectByKeyAsync(projectKey.ToUpperInvariant(), ct);
+            if (selectedProject is null) selectedProject = projects[0];
+        }
+        else
+        {
+            selectedProject = projects[0];
+        }
+
+        var snapshot = await _dashboardService.GetSnapshotAsync(selectedProject.Id, CurrentUserId.Value, ct);
 
         var vm = new DashboardPageViewModel
         {
-            Shell = await BuildShellAsync("Dashboard", selectedProjectId, ct),
+            Shell = await BuildShellAsync("Dashboard", selectedProject.Id, ct),
             Snapshot = snapshot
         };
 

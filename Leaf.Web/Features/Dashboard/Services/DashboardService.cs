@@ -25,6 +25,7 @@ public sealed class DashboardService(ILeafRepository repository) : IDashboardSer
         return new DashboardSnapshot
         {
             ProjectId = projectId,
+            ProjectKey = project.Key,
             ProjectName = project.Name,
             ActiveSprint = activeSprint,
             CountsByStatus = counts,

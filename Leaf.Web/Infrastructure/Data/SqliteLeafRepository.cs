@@ -251,7 +251,7 @@ public sealed class SqliteLeafRepository(ISqliteConnectionFactory connectionFact
         await using var connection = await connectionFactory.OpenConnectionAsync(ct);
 
         var sql = new StringBuilder(
-            "SELECT Id, ProjectId, SprintId, ParentId, Title, Description, Type, Status, Priority, AssigneeUserId, ReporterUserId, LabelsCsv, StoryPoints, DueDate, BacklogRank, ColumnOrder, CreatedUtc, UpdatedUtc FROM WorkItems WHERE ProjectId = @projectId");
+            "SELECT Id, Key, ProjectId, SprintId, ParentId, Title, Description, Type, Status, Priority, AssigneeUserId, ReporterUserId, LabelsCsv, StoryPoints, DueDate, BacklogRank, ColumnOrder, CreatedUtc, UpdatedUtc FROM WorkItems WHERE ProjectId = @projectId");
 
         var args = new List<(string Name, object Value)> { ("@projectId", filters.ProjectId) };
 
@@ -323,7 +323,7 @@ public sealed class SqliteLeafRepository(ISqliteConnectionFactory connectionFact
         if (sprintId.HasValue)
         {
             cmd.CommandText = """
-                              SELECT Id, ProjectId, SprintId, ParentId, Title, Description, Type, Status, Priority, AssigneeUserId, ReporterUserId, LabelsCsv, StoryPoints, DueDate, BacklogRank, ColumnOrder, CreatedUtc, UpdatedUtc
+                              SELECT Id, Key, ProjectId, SprintId, ParentId, Title, Description, Type, Status, Priority, AssigneeUserId, ReporterUserId, LabelsCsv, StoryPoints, DueDate, BacklogRank, ColumnOrder, CreatedUtc, UpdatedUtc
                               FROM WorkItems
                               WHERE ProjectId = @projectId
                                 AND SprintId = @sprintId
@@ -334,7 +334,7 @@ public sealed class SqliteLeafRepository(ISqliteConnectionFactory connectionFact
         else
         {
             cmd.CommandText = """
-                              SELECT Id, ProjectId, SprintId, ParentId, Title, Description, Type, Status, Priority, AssigneeUserId, ReporterUserId, LabelsCsv, StoryPoints, DueDate, BacklogRank, ColumnOrder, CreatedUtc, UpdatedUtc
+                              SELECT Id, Key, ProjectId, SprintId, ParentId, Title, Description, Type, Status, Priority, AssigneeUserId, ReporterUserId, LabelsCsv, StoryPoints, DueDate, BacklogRank, ColumnOrder, CreatedUtc, UpdatedUtc
                               FROM WorkItems
                               WHERE ProjectId = @projectId
                               ORDER BY Status, ColumnOrder, Id;
@@ -358,7 +358,7 @@ public sealed class SqliteLeafRepository(ISqliteConnectionFactory connectionFact
         await using var connection = await connectionFactory.OpenConnectionAsync(ct);
         await using var cmd = connection.CreateCommand();
         cmd.CommandText = """
-                          SELECT Id, ProjectId, SprintId, ParentId, Title, Description, Type, Status, Priority, AssigneeUserId, ReporterUserId, LabelsCsv, StoryPoints, DueDate, BacklogRank, ColumnOrder, CreatedUtc, UpdatedUtc
+                          SELECT Id, Key, ProjectId, SprintId, ParentId, Title, Description, Type, Status, Priority, AssigneeUserId, ReporterUserId, LabelsCsv, StoryPoints, DueDate, BacklogRank, ColumnOrder, CreatedUtc, UpdatedUtc
                           FROM WorkItems
                           WHERE Id = @id
                           LIMIT 1;
@@ -369,17 +369,63 @@ public sealed class SqliteLeafRepository(ISqliteConnectionFactory connectionFact
         return await reader.ReadAsync(ct) ? MapWorkItem(reader) : null;
     }
 
+    public async Task<WorkItem?> GetWorkItemByKeyAsync(string key, CancellationToken ct = default)
+    {
+        await using var connection = await connectionFactory.OpenConnectionAsync(ct);
+        await using var cmd = connection.CreateCommand();
+        cmd.CommandText = """
+                          SELECT Id, Key, ProjectId, SprintId, ParentId, Title, Description, Type, Status, Priority, AssigneeUserId, ReporterUserId, LabelsCsv, StoryPoints, DueDate, BacklogRank, ColumnOrder, CreatedUtc, UpdatedUtc
+                          FROM WorkItems
+                          WHERE Key = @key
+                          LIMIT 1;
+                          """;
+        cmd.Parameters.AddWithValue("@key", key);
+
+        await using var reader = await cmd.ExecuteReaderAsync(ct);
+        return await reader.ReadAsync(ct) ? MapWorkItem(reader) : null;
+    }
+
+    public async Task<string> GetNextWorkItemKeyAsync(int projectId, CancellationToken ct = default)
+    {
+        await using var connection = await connectionFactory.OpenConnectionAsync(ct);
+        var project = await GetProjectAsync(projectId, ct);
+        var prefix = project?.Key ?? "P";
+
+        await using var cmd = connection.CreateCommand();
+        cmd.CommandText = """
+                          SELECT COALESCE(MAX(CAST(SUBSTR(Key, INSTR(Key, '-') + 1) AS INTEGER)), 0) + 1
+                          FROM WorkItems
+                          WHERE ProjectId = @projectId;
+                          """;
+        cmd.Parameters.AddWithValue("@projectId", projectId);
+        var next = Convert.ToInt32(await cmd.ExecuteScalarAsync(ct));
+
+        return $"{prefix}-{next}";
+    }
+
+    public async Task<Project?> GetProjectByKeyAsync(string key, CancellationToken ct = default)
+    {
+        await using var connection = await connectionFactory.OpenConnectionAsync(ct);
+        await using var cmd = connection.CreateCommand();
+        cmd.CommandText = "SELECT Id, Key, Name, Description, IsArchived, CreatedUtc FROM Projects WHERE Key = @key LIMIT 1;";
+        cmd.Parameters.AddWithValue("@key", key);
+
+        await using var reader = await cmd.ExecuteReaderAsync(ct);
+        return await reader.ReadAsync(ct) ? MapProject(reader) : null;
+    }
+
     public async Task<int> CreateWorkItemAsync(WorkItem item, CancellationToken ct = default)
     {
         await using var connection = await connectionFactory.OpenConnectionAsync(ct);
         await using var cmd = connection.CreateCommand();
         cmd.CommandText = """
-                          INSERT INTO WorkItems(ProjectId, SprintId, ParentId, Title, Description, Type, Status, Priority, AssigneeUserId, ReporterUserId,
+                          INSERT INTO WorkItems(Key, ProjectId, SprintId, ParentId, Title, Description, Type, Status, Priority, AssigneeUserId, ReporterUserId,
                                                 LabelsCsv, StoryPoints, DueDate, BacklogRank, ColumnOrder, CreatedUtc, UpdatedUtc)
-                          VALUES(@projectId, @sprintId, @parentId, @title, @description, @type, @status, @priority, @assignee, @reporter,
+                          VALUES(@key, @projectId, @sprintId, @parentId, @title, @description, @type, @status, @priority, @assignee, @reporter,
                                  @labelsCsv, @storyPoints, @dueDate, @backlogRank, @columnOrder, @createdUtc, @updatedUtc);
                           SELECT last_insert_rowid();
                           """;
+        cmd.Parameters.AddWithValue("@key", item.Key);
         cmd.Parameters.AddWithValue("@projectId", item.ProjectId);
         cmd.Parameters.AddWithValue("@sprintId", item.SprintId.HasValue ? item.SprintId.Value : DBNull.Value);
         cmd.Parameters.AddWithValue("@parentId", item.ParentId.HasValue ? item.ParentId.Value : DBNull.Value);
@@ -815,6 +861,46 @@ public sealed class SqliteLeafRepository(ISqliteConnectionFactory connectionFact
         await cmd.ExecuteNonQueryAsync(ct);
     }
 
+    public async Task<IReadOnlyList<ActivityEntry>> GetActivityForWorkItemAsync(int workItemId, CancellationToken ct = default)
+    {
+        await using var connection = await connectionFactory.OpenConnectionAsync(ct);
+        await using var cmd = connection.CreateCommand();
+        cmd.CommandText = """
+                          SELECT Id, ProjectId, WorkItemId, ActorUserId, Kind, Description, CreatedUtc
+                          FROM Activity
+                          WHERE WorkItemId = @workItemId
+                          ORDER BY CreatedUtc DESC;
+                          """;
+        cmd.Parameters.AddWithValue("@workItemId", workItemId);
+
+        var result = new List<ActivityEntry>();
+        await using var reader = await cmd.ExecuteReaderAsync(ct);
+        while (await reader.ReadAsync(ct))
+        {
+            result.Add(new ActivityEntry
+            {
+                Id = reader.GetInt32(0),
+                ProjectId = reader.GetInt32(1),
+                WorkItemId = reader.IsDBNull(2) ? null : reader.GetInt32(2),
+                ActorUserId = reader.GetInt32(3),
+                Kind = reader.GetString(4),
+                Description = reader.GetString(5),
+                CreatedUtc = ParseDateTime(reader.GetString(6))
+            });
+        }
+
+        return result;
+    }
+
+    public async Task DeleteWorkItemAsync(int id, CancellationToken ct = default)
+    {
+        await using var connection = await connectionFactory.OpenConnectionAsync(ct);
+        await using var cmd = connection.CreateCommand();
+        cmd.CommandText = "DELETE FROM WorkItems WHERE Id = @id;";
+        cmd.Parameters.AddWithValue("@id", id);
+        await cmd.ExecuteNonQueryAsync(ct);
+    }
+
     public async Task<IReadOnlyList<ActivityEntry>> GetRecentActivityAsync(int projectId, int take, CancellationToken ct = default)
     {
         await using var connection = await connectionFactory.OpenConnectionAsync(ct);
@@ -960,6 +1046,75 @@ public sealed class SqliteLeafRepository(ISqliteConnectionFactory connectionFact
     public Task SeedDemoDataIfEmptyAsync(CancellationToken ct = default)
         => Task.CompletedTask;
 
+    public async Task<int> AddAttachmentAsync(Attachment attachment, CancellationToken ct = default)
+    {
+        await using var connection = await connectionFactory.OpenConnectionAsync(ct);
+        await using var cmd = connection.CreateCommand();
+        cmd.CommandText = """
+                          INSERT INTO Attachments(WorkItemId, FileName, ContentType, FileSize, StoredPath, UploadedByUserId, CreatedUtc)
+                          VALUES(@workItemId, @fileName, @contentType, @fileSize, @storedPath, @uploadedByUserId, @createdUtc);
+                          SELECT last_insert_rowid();
+                          """;
+        cmd.Parameters.AddWithValue("@workItemId", attachment.WorkItemId);
+        cmd.Parameters.AddWithValue("@fileName", attachment.FileName);
+        cmd.Parameters.AddWithValue("@contentType", attachment.ContentType);
+        cmd.Parameters.AddWithValue("@fileSize", attachment.FileSize);
+        cmd.Parameters.AddWithValue("@storedPath", attachment.StoredPath);
+        cmd.Parameters.AddWithValue("@uploadedByUserId", attachment.UploadedByUserId);
+        cmd.Parameters.AddWithValue("@createdUtc", attachment.CreatedUtc.ToString("O"));
+        return Convert.ToInt32(await cmd.ExecuteScalarAsync(ct));
+    }
+
+    public async Task<IReadOnlyList<Attachment>> GetAttachmentsAsync(int workItemId, CancellationToken ct = default)
+    {
+        await using var connection = await connectionFactory.OpenConnectionAsync(ct);
+        await using var cmd = connection.CreateCommand();
+        cmd.CommandText = "SELECT Id, WorkItemId, FileName, ContentType, FileSize, StoredPath, UploadedByUserId, CreatedUtc FROM Attachments WHERE WorkItemId = @workItemId ORDER BY CreatedUtc;";
+        cmd.Parameters.AddWithValue("@workItemId", workItemId);
+
+        var result = new List<Attachment>();
+        await using var reader = await cmd.ExecuteReaderAsync(ct);
+        while (await reader.ReadAsync(ct))
+        {
+            result.Add(MapAttachment(reader));
+        }
+
+        return result;
+    }
+
+    public async Task<Attachment?> GetAttachmentAsync(int id, CancellationToken ct = default)
+    {
+        await using var connection = await connectionFactory.OpenConnectionAsync(ct);
+        await using var cmd = connection.CreateCommand();
+        cmd.CommandText = "SELECT Id, WorkItemId, FileName, ContentType, FileSize, StoredPath, UploadedByUserId, CreatedUtc FROM Attachments WHERE Id = @id LIMIT 1;";
+        cmd.Parameters.AddWithValue("@id", id);
+
+        await using var reader = await cmd.ExecuteReaderAsync(ct);
+        return await reader.ReadAsync(ct) ? MapAttachment(reader) : null;
+    }
+
+    public async Task DeleteAttachmentAsync(int id, CancellationToken ct = default)
+    {
+        await using var connection = await connectionFactory.OpenConnectionAsync(ct);
+        await using var cmd = connection.CreateCommand();
+        cmd.CommandText = "DELETE FROM Attachments WHERE Id = @id;";
+        cmd.Parameters.AddWithValue("@id", id);
+        await cmd.ExecuteNonQueryAsync(ct);
+    }
+
+    private static Attachment MapAttachment(SqliteDataReader reader)
+        => new()
+        {
+            Id = reader.GetInt32(0),
+            WorkItemId = reader.GetInt32(1),
+            FileName = reader.GetString(2),
+            ContentType = reader.GetString(3),
+            FileSize = reader.GetInt64(4),
+            StoredPath = reader.GetString(5),
+            UploadedByUserId = reader.GetInt32(6),
+            CreatedUtc = ParseDateTime(reader.GetString(7))
+        };
+
     private static User MapUser(SqliteDataReader reader)
         => new()
         {
@@ -987,23 +1142,24 @@ public sealed class SqliteLeafRepository(ISqliteConnectionFactory connectionFact
         => new()
         {
             Id = reader.GetInt32(0),
-            ProjectId = reader.GetInt32(1),
-            SprintId = reader.IsDBNull(2) ? null : reader.GetInt32(2),
-            ParentId = reader.IsDBNull(3) ? null : reader.GetInt32(3),
-            Title = reader.GetString(4),
-            Description = reader.GetString(5),
-            Type = (WorkItemType)reader.GetInt32(6),
-            Status = (WorkItemStatus)reader.GetInt32(7),
-            Priority = (WorkItemPriority)reader.GetInt32(8),
-            AssigneeUserId = reader.IsDBNull(9) ? null : reader.GetInt32(9),
-            ReporterUserId = reader.GetInt32(10),
-            LabelsCsv = reader.GetString(11),
-            StoryPoints = reader.GetInt32(12),
-            DueDate = reader.IsDBNull(13) ? null : ParseDateOnly(reader.GetString(13)),
-            BacklogRank = reader.GetInt32(14),
-            ColumnOrder = reader.GetInt32(15),
-            CreatedUtc = ParseDateTime(reader.GetString(16)),
-            UpdatedUtc = ParseDateTime(reader.GetString(17))
+            Key = reader.GetString(1),
+            ProjectId = reader.GetInt32(2),
+            SprintId = reader.IsDBNull(3) ? null : reader.GetInt32(3),
+            ParentId = reader.IsDBNull(4) ? null : reader.GetInt32(4),
+            Title = reader.GetString(5),
+            Description = reader.GetString(6),
+            Type = (WorkItemType)reader.GetInt32(7),
+            Status = (WorkItemStatus)reader.GetInt32(8),
+            Priority = (WorkItemPriority)reader.GetInt32(9),
+            AssigneeUserId = reader.IsDBNull(10) ? null : reader.GetInt32(10),
+            ReporterUserId = reader.GetInt32(11),
+            LabelsCsv = reader.GetString(12),
+            StoryPoints = reader.GetInt32(13),
+            DueDate = reader.IsDBNull(14) ? null : ParseDateOnly(reader.GetString(14)),
+            BacklogRank = reader.GetInt32(15),
+            ColumnOrder = reader.GetInt32(16),
+            CreatedUtc = ParseDateTime(reader.GetString(17)),
+            UpdatedUtc = ParseDateTime(reader.GetString(18))
         };
 
     private static Sprint MapSprint(SqliteDataReader reader)

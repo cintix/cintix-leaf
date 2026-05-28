@@ -68,25 +68,26 @@ public sealed class ProjectsController : LeafControllerBase
             return RedirectToAction(nameof(Index));
         }
 
-        return RedirectToAction(nameof(Workspace), new { id = result.Value });
+        var project = await _repository.GetProjectByKeyAsync(key.ToUpperInvariant(), ct);
+        return RedirectToAction(nameof(Workspace), new { key = project?.Key ?? key.ToUpperInvariant() });
     }
 
-    [HttpGet("{id:int}")]
-    public async Task<IActionResult> Workspace(int id, string? q, int? assigneeId, int? sprintId, string? label, CancellationToken ct)
+    [HttpGet("{key}")]
+    public async Task<IActionResult> Workspace(string key, string? q, int? assigneeId, int? sprintId, string? label, CancellationToken ct)
     {
         if (!CurrentUserId.HasValue)
         {
             return RedirectToAction("Login", "Auth");
         }
 
-        var project = await _projectService.GetProjectAsync(id, ct);
+        var project = await _repository.GetProjectByKeyAsync(key.ToUpperInvariant(), ct);
         if (project is null)
         {
             return NotFound();
         }
 
         var searchFilters = new WorkItemSearchFilters(
-            id,
+            project.Id,
             q,
             assigneeId,
             sprintId,
@@ -94,18 +95,18 @@ public sealed class ProjectsController : LeafControllerBase
             null,
             string.IsNullOrWhiteSpace(label) ? null : [label]);
 
-        var members = await _projectService.GetMembersAsync(id, ct);
+        var members = await _projectService.GetMembersAsync(project.Id, ct);
         var users = await _userService.GetUsersAsync(includeInactive: false, ct);
-        var sprints = await _sprintService.GetSprintsAsync(id, ct);
-        var activeSprint = await _sprintService.GetActiveSprintAsync(id, ct);
+        var sprints = await _sprintService.GetSprintsAsync(project.Id, ct);
+        var activeSprint = await _sprintService.GetActiveSprintAsync(project.Id, ct);
         var backlog = await _searchService.SearchAsync(searchFilters, ct);
-        var board = await _workItemService.GetBoardItemsAsync(id, activeSprint?.Id, ct);
-        var labels = await _repository.GetLabelsAsync(id, ct);
-        var activity = await _repository.GetRecentActivityAsync(id, 20, ct);
+        var board = await _workItemService.GetBoardItemsAsync(project.Id, activeSprint?.Id, ct);
+        var labels = await _repository.GetLabelsAsync(project.Id, ct);
+        var activity = await _repository.GetRecentActivityAsync(project.Id, 20, ct);
 
         var vm = new ProjectWorkspaceViewModel
         {
-            Shell = await BuildShellAsync("Projects", id, ct),
+            Shell = await BuildShellAsync("Projects", project.Id, ct),
             Project = project,
             Members = members,
             Users = users,
@@ -124,34 +125,53 @@ public sealed class ProjectsController : LeafControllerBase
         return View(vm);
     }
 
-    [HttpPost("{id:int}/archive")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Archive(int id, bool archived, CancellationToken ct)
+    [HttpGet("{key}/{itemKey}")]
+    public async Task<IActionResult> Issue(string key, string itemKey, CancellationToken ct)
     {
-        var project = await _projectService.GetProjectAsync(id, ct);
-        if (project is null)
+        if (!CurrentUserId.HasValue)
         {
-            return NotFound();
+            return RedirectToAction("Login", "Auth");
         }
+
+        var project = await _repository.GetProjectByKeyAsync(key.ToUpperInvariant(), ct);
+        if (project is null) return NotFound();
+
+        var workItem = await _repository.GetWorkItemByKeyAsync(itemKey.ToUpperInvariant(), ct);
+        if (workItem is null || workItem.ProjectId != project.Id) return NotFound();
+
+        var detail = await _workItemService.GetDetailAsync(workItem.Id, ct);
+
+        return View(detail);
+    }
+
+    [HttpPost("{key}/archive")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Archive(string key, bool archived, CancellationToken ct)
+    {
+        var project = await _repository.GetProjectByKeyAsync(key.ToUpperInvariant(), ct);
+        if (project is null) return NotFound();
 
         await _projectService.UpdateProjectAsync(new UpdateProjectInput(project.Id, project.Name, project.Description, archived), ct);
         return RedirectToAction(nameof(Index));
     }
 
-    [HttpPost("{id:int}/members")]
+    [HttpPost("{key}/members")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> UpdateMembers(int id, List<int> memberUserIds, CancellationToken ct)
+    public async Task<IActionResult> UpdateMembers(string key, List<int> memberUserIds, CancellationToken ct)
     {
-        await _projectService.SetMembersAsync(id, memberUserIds.Distinct().ToList(), ct);
+        var project = await _repository.GetProjectByKeyAsync(key.ToUpperInvariant(), ct);
+        if (project is null) return NotFound();
+
+        await _projectService.SetMembersAsync(project.Id, memberUserIds.Distinct().ToList(), ct);
         await _repository.AddActivityAsync(new ActivityEntry
         {
-            ProjectId = id,
+            ProjectId = project.Id,
             ActorUserId = CurrentUserId ?? 1,
             Kind = "membership_changed",
             Description = "Project member list updated",
             CreatedUtc = DateTime.UtcNow
         }, ct);
 
-        return RedirectToAction(nameof(Workspace), new { id });
+        return RedirectToAction(nameof(Workspace), new { key = project.Key });
     }
 }

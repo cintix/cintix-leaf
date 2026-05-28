@@ -59,6 +59,19 @@ public sealed class AddCommentRequest
     public string Body { get; set; } = string.Empty;
 }
 
+public sealed class UpdateWorkItemRequest
+{
+    public string Title { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public WorkItemType Type { get; set; }
+    public WorkItemStatus Status { get; set; }
+    public WorkItemPriority Priority { get; set; }
+    public int? AssigneeUserId { get; set; }
+    public int StoryPoints { get; set; }
+    public string Labels { get; set; } = string.Empty;
+    public string? DueDate { get; set; }
+}
+
 public sealed class CreateLabelRequest
 {
     public int ProjectId { get; set; }

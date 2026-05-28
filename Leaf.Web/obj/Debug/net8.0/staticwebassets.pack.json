@@ -1,20 +1,16 @@
 {
   "Files": [
     {
-      "Id": "/Users/michael.martinsen/Projects/cintix-leaf/Leaf.Web/wwwroot/css/app.css",
+      "Id": "/home/cintix/Projects/cintix-leaf/Leaf.Web/wwwroot/css/app.css",
       "PackagePath": "staticwebassets/css/app.css"
     },
     {
-      "Id": "/Users/michael.martinsen/Projects/cintix-leaf/Leaf.Web/wwwroot/favicon.ico",
+      "Id": "/home/cintix/Projects/cintix-leaf/Leaf.Web/wwwroot/favicon.ico",
       "PackagePath": "staticwebassets/favicon.ico"
     },
     {
-      "Id": "/Users/michael.martinsen/Projects/cintix-leaf/Leaf.Web/wwwroot/js/app.js",
+      "Id": "/home/cintix/Projects/cintix-leaf/Leaf.Web/wwwroot/js/app.js",
       "PackagePath": "staticwebassets/js/app.js"
-    },
-    {
-      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.Leaf.Web.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
-      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
     },
     {
       "Id": "obj/Debug/net8.0/staticwebassets/msbuild.Leaf.Web.Microsoft.AspNetCore.StaticWebAssets.props",

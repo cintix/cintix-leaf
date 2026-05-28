@@ -3,6 +3,7 @@ namespace Leaf.Web.Features.Shared.Models;
 public sealed class DashboardSnapshot
 {
     public int ProjectId { get; set; }
+    public string ProjectKey { get; set; } = string.Empty;
     public string ProjectName { get; set; } = string.Empty;
     public Sprint? ActiveSprint { get; set; }
     public IReadOnlyDictionary<WorkItemStatus, int> CountsByStatus { get; set; } = new Dictionary<WorkItemStatus, int>();
