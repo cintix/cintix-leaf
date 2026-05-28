@@ -1,8 +1,14 @@
 using Leaf.Web.Runtime.Bootstrap;
 using Leaf.Web.UI.Infrastructure;
+using Microsoft.AspNetCore.DataProtection;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.UseUrls(builder.Configuration["LeafRuntime:Urls"] ?? "http://0.0.0.0:8080");
+
+var keysPath = Path.Combine(Directory.GetCurrentDirectory(), "Runtime", "dp-keys");
+Directory.CreateDirectory(keysPath);
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo(keysPath));
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();

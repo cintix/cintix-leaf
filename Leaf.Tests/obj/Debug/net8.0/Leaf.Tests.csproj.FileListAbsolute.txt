@@ -917,3 +917,9 @@
 /home/cintix/Projects/cintix-leaf/Leaf.Tests/obj/Debug/net8.0/Leaf.Tests.pdb
 /home/cintix/Projects/cintix-leaf/Leaf.Tests/obj/Debug/net8.0/Leaf.Tests.genruntimeconfig.cache
 /home/cintix/Projects/cintix-leaf/Leaf.Tests/obj/Debug/net8.0/ref/Leaf.Tests.dll
+/home/cintix/Projects/cintix-leaf/Leaf.Tests/bin/Debug/net8.0/Microsoft.AspNetCore.Cryptography.Internal.dll
+/home/cintix/Projects/cintix-leaf/Leaf.Tests/bin/Debug/net8.0/Microsoft.AspNetCore.DataProtection.dll
+/home/cintix/Projects/cintix-leaf/Leaf.Tests/bin/Debug/net8.0/Microsoft.AspNetCore.DataProtection.Abstractions.dll
+/home/cintix/Projects/cintix-leaf/Leaf.Tests/bin/Debug/net8.0/System.Security.Cryptography.Pkcs.dll
+/home/cintix/Projects/cintix-leaf/Leaf.Tests/bin/Debug/net8.0/System.Security.Cryptography.Xml.dll
+/home/cintix/Projects/cintix-leaf/Leaf.Tests/bin/Debug/net8.0/runtimes/win/lib/net8.0/System.Security.Cryptography.Pkcs.dll

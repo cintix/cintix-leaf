@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Leaf.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+58df00f0cb03bf488b51d14c7557bd0228c56ea4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7a637de1e1bd7b06566e539514d3d5f7f19bfc36")]
 [assembly: System.Reflection.AssemblyProductAttribute("Leaf.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Leaf.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

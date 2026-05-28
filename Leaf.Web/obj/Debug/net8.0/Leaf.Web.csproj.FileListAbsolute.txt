@@ -111,3 +111,14 @@
 /home/cintix/Projects/cintix-leaf/Leaf.Web/obj/Debug/net8.0/Leaf.Web.pdb
 /home/cintix/Projects/cintix-leaf/Leaf.Web/obj/Debug/net8.0/Leaf.Web.genruntimeconfig.cache
 /home/cintix/Projects/cintix-leaf/Leaf.Web/obj/Debug/net8.0/ref/Leaf.Web.dll
+/home/cintix/Projects/cintix-leaf/Leaf.Web/bin/Debug/net8.0/Microsoft.AspNetCore.Cryptography.Internal.dll
+/home/cintix/Projects/cintix-leaf/Leaf.Web/bin/Debug/net8.0/Microsoft.AspNetCore.DataProtection.dll
+/home/cintix/Projects/cintix-leaf/Leaf.Web/bin/Debug/net8.0/Microsoft.AspNetCore.DataProtection.Abstractions.dll
+/home/cintix/Projects/cintix-leaf/Leaf.Web/bin/Debug/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/home/cintix/Projects/cintix-leaf/Leaf.Web/bin/Debug/net8.0/Microsoft.Extensions.Diagnostics.Abstractions.dll
+/home/cintix/Projects/cintix-leaf/Leaf.Web/bin/Debug/net8.0/Microsoft.Extensions.Hosting.Abstractions.dll
+/home/cintix/Projects/cintix-leaf/Leaf.Web/bin/Debug/net8.0/Microsoft.Extensions.Logging.Abstractions.dll
+/home/cintix/Projects/cintix-leaf/Leaf.Web/bin/Debug/net8.0/Microsoft.Extensions.Options.dll
+/home/cintix/Projects/cintix-leaf/Leaf.Web/bin/Debug/net8.0/System.Security.Cryptography.Pkcs.dll
+/home/cintix/Projects/cintix-leaf/Leaf.Web/bin/Debug/net8.0/System.Security.Cryptography.Xml.dll
+/home/cintix/Projects/cintix-leaf/Leaf.Web/bin/Debug/net8.0/runtimes/win/lib/net8.0/System.Security.Cryptography.Pkcs.dll
